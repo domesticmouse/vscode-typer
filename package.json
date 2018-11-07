@@ -1,0 +1,58 @@
+{
+    "name": "flutter-typer",
+    "displayName": "flutter-typer",
+    "description": "Type in flutter code",
+    "version": "0.0.1",
+    "publisher": "brettmorgan",
+    "engines": {
+        "vscode": "^1.28.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "onCommand:extension.devFestNext",
+        "onCommand:extension.devFestPrevious",
+        "onCommand:extension.devFestResetMain"
+    ],
+    "main": "./out/extension",
+    "contributes": {
+        "commands": [
+            {
+                "command": "extension.devFestResetMain",
+                "title": "Reset Main",
+                "category": "DevFest"
+            }
+        ],
+        "keybindings": [
+            {
+                "command": "extension.devFestNext",
+                "key": "ctrl+right",
+                "mac": "cmd+right",
+                "when": "editorTextFocus"
+            },
+            {
+                "command": "extension.devFestPrevious",
+                "key": "ctrl+left",
+                "mac": "cmd+left",
+                "when": "editorTextFocus"
+            }
+        ]
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "postinstall": "node ./node_modules/vscode/bin/install",
+        "test": "npm run compile && node ./node_modules/vscode/bin/test"
+    },
+    "devDependencies": {
+        "@types/diff": "^3.5.2",
+        "@types/mocha": "^2.2.42",
+        "@types/node": "^8.10.25",
+        "diff": "^3.5.0",
+        "tslint": "^5.8.0",
+        "typescript": "^2.6.1",
+        "vscode": "^1.1.21"
+    }
+}
