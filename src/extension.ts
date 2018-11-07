@@ -3,29 +3,43 @@ import * as path from 'path';
 import * as vscode from 'vscode';
 import * as promisify from 'es6-promisify';
 
-const wait = (ms: number) => new Promise((res) => setTimeout(res, ms));
+function wait(ms: number): Promise<void> {
+  return new Promise((res) => setTimeout(res, ms));
+}
 
 export function activate(context: vscode.ExtensionContext) {
-    const updater = new Updater();
-    context.subscriptions.push(vscode.commands.registerTextEditorCommand('extension.devFestResetMain',
-        (textEditor: vscode.TextEditor, edit: vscode.TextEditorEdit) => {
-            updater.reset(textEditor, edit);
-        }));
-    context.subscriptions.push(vscode.commands.registerTextEditorCommand('extension.devFestNext',
-        (textEditor: vscode.TextEditor, edit: vscode.TextEditorEdit) => {
-            updater.next(textEditor, edit);
-        }));
-    context.subscriptions.push(vscode.commands.registerTextEditorCommand('extension.devFestPrevious',
-        (textEditor: vscode.TextEditor, edit: vscode.TextEditorEdit) => {
-            updater.previous(textEditor, edit);
-        }));
+  const updater = new Updater();
+  context.subscriptions.push(
+    vscode.commands.registerTextEditorCommand(
+      'extension.devFestResetMain',
+      (textEditor: vscode.TextEditor, edit: vscode.TextEditorEdit) => {
+        updater.reset(textEditor, edit);
+      },
+    ),
+  );
+  context.subscriptions.push(
+    vscode.commands.registerTextEditorCommand(
+      'extension.devFestNext',
+      (textEditor: vscode.TextEditor, edit: vscode.TextEditorEdit) => {
+        updater.next(textEditor, edit);
+      },
+    ),
+  );
+  context.subscriptions.push(
+    vscode.commands.registerTextEditorCommand(
+      'extension.devFestPrevious',
+      (textEditor: vscode.TextEditor, edit: vscode.TextEditorEdit) => {
+        updater.previous(textEditor, edit);
+      },
+    ),
+  );
 }
 
 class Updater {
-    private step = 0;
-    private steps = [
-        // Step-01
-        `
+  private step = 0;
+  private steps = [
+    // Step-01
+    `
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -50,8 +64,8 @@ class MyHomePage extends StatelessWidget {
       );
 }
 `,
-        // Step-02
-        `
+    // Step-02
+    `
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -81,8 +95,8 @@ class MyHomePage extends StatelessWidget {
       );
 }
 `,
-        // Step-03
-        `
+    // Step-03
+    `
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -122,8 +136,8 @@ class MyHomePage extends StatelessWidget {
       );
 }
 `,
-        // Step-04
-        `
+    // Step-04
+    `
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -168,8 +182,8 @@ class MyHomePage extends StatelessWidget {
       );
 }
 `,
-        // Step-05
-        `
+    // Step-05
+    `
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -220,8 +234,8 @@ class CookingImage extends StatelessWidget {
       );
 }
 `,
-        // Step-06
-        `
+    // Step-06
+    `
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -277,8 +291,8 @@ class CookingImage extends StatelessWidget {
       );
 }
 `,
-        // Step-07
-        `
+    // Step-07
+    `
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -342,8 +356,8 @@ class CookingImage extends StatelessWidget {
       );
 }
 `,
-        // Step-08
-        `
+    // Step-08
+    `
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -417,8 +431,8 @@ class CookingImage extends StatelessWidget {
       );
 }
 `,
-        // Step-09
-        `
+    // Step-09
+    `
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -524,8 +538,8 @@ class DetailPage extends StatelessWidget {
       );
 }
 `,
-        // Step-10
-        `
+    // Step-10
+    `
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -641,8 +655,8 @@ class HeroImage extends StatelessWidget {
       );
 }
 `,
-        // Step-11
-        `
+    // Step-11
+    `
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -764,8 +778,8 @@ class HeroImage extends StatelessWidget {
       );
 }
 `,
-        // Step-12
-        `
+    // Step-12
+    `
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -894,8 +908,8 @@ class HeroImage extends StatelessWidget {
       );
 }
 `,
-        // Step-13
-        `
+    // Step-13
+    `
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -1036,8 +1050,8 @@ class HeroImage extends StatelessWidget {
       );
 }
 `,
-        // Step-14
-        `
+    // Step-14
+    `
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -1186,8 +1200,8 @@ class HeroImage extends StatelessWidget {
       );
 }
 `,
-        // Step-15
-        `
+    // Step-15
+    `
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -1351,8 +1365,8 @@ class HeroImage extends StatelessWidget {
       );
 }
 `,
-        // Step-16
-        `
+    // Step-16
+    `
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -1519,8 +1533,8 @@ class HeroImage extends StatelessWidget {
       );
 }
 `,
-        // Step-17
-        `
+    // Step-17
+    `
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -1695,8 +1709,8 @@ class HeroImage extends StatelessWidget {
       );
 }
 `,
-        // Step-18
-        `
+    // Step-18
+    `
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -1874,8 +1888,8 @@ class HeroImage extends StatelessWidget {
       );
 }
 `,
-        // Step-19
-        `
+    // Step-19
+    `
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -2056,8 +2070,8 @@ class HeroImage extends StatelessWidget {
       );
 }
 `,
-        // Step-20
-        `
+    // Step-20
+    `
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -2244,54 +2258,60 @@ class HeroImage extends StatelessWidget {
         tag: imagePath,
       );
 }
-`];
-    private statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
+`,
+  ];
+  private statusBarItem = vscode.window.createStatusBarItem(
+    vscode.StatusBarAlignment.Left,
+  );
 
-    public reset(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
-        const basename = path.posix.basename(editor.document.fileName);
-        if (basename !== 'main.dart') {
-            return;
-        }
-        this.step = 0;
-        this.setEditorContent(editor, edit);
+  public reset(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
+    const basename = path.posix.basename(editor.document.fileName);
+    if (basename !== 'main.dart') {
+      return;
+    }
+    this.step = 0;
+    this.setEditorContent(editor, edit);
+  }
+
+  public next(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
+    const basename = path.posix.basename(editor.document.fileName);
+    if (basename !== 'main.dart') {
+      return;
     }
 
-    public next(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
-        const basename = path.posix.basename(editor.document.fileName);
-        if (basename !== 'main.dart') {
-            return;
-        }
+    if (this.step < this.steps.length - 1) {
+      this.step += 1;
+      this.setEditorContent(editor, edit);
+    }
+  }
 
-        if (this.step < this.steps.length - 1) {
-            this.step += 1;
-            this.setEditorContent(editor, edit);
-        }
+  public previous(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
+    const basename = path.posix.basename(editor.document.fileName);
+    if (basename !== 'main.dart') {
+      return;
     }
 
-    public previous(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
-        const basename = path.posix.basename(editor.document.fileName);
-        if (basename !== 'main.dart') {
-            return;
-        }
-
-        if (this.step > 0) {
-            this.step -= 1;
-            this.setEditorContent(editor, edit);
-        }
+    if (this.step > 0) {
+      this.step -= 1;
+      this.setEditorContent(editor, edit);
     }
+  }
 
-    private setEditorContent(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
-        const { document } = editor;
-        const fullText = document.getText();
-        const range = new vscode.Range(
-            document.positionAt(0),
-            document.positionAt(fullText.length - 1));
-        edit.delete(range);
-        edit.insert(document.positionAt(0), this.steps[this.step].trim());
-        editor.document.save().then(() => {
-            this.statusBarItem.text = `Step #${this.step + 1}`;
-            this.statusBarItem.show();
-        });
-
-    }
+  private setEditorContent(
+    editor: vscode.TextEditor,
+    edit: vscode.TextEditorEdit,
+  ) {
+    const { document } = editor;
+    const fullText = document.getText();
+    const range = new vscode.Range(
+      document.positionAt(0),
+      document.positionAt(fullText.length - 1),
+    );
+    edit.delete(range);
+    edit.insert(document.positionAt(0), this.steps[this.step].trim());
+    editor.document.save().then(() => {
+      this.statusBarItem.text = `Step #${this.step + 1}`;
+      this.statusBarItem.show();
+    });
+  }
 }
