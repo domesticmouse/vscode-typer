@@ -183,7 +183,7 @@ class MyHomePage extends StatelessWidget {
 }
 `,
     // Step-05
-    `
+`
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -215,10 +215,11 @@ class MyHomePage extends StatelessWidget {
               return const Center(child: Text('Loading'));
             }
             return ListView.builder(
-                itemCount: snapshot.data.documents.length,
-                itemBuilder: (context, index) => CookingImage(
-                      document: snapshot.data.documents[index],
-                    ));
+              itemCount: snapshot.data.documents.length,
+              itemBuilder: (context, index) => CookingImage(
+                    document: snapshot.data.documents[index],
+                  ),
+            );
           },
         ),
       );
@@ -2305,7 +2306,7 @@ class HeroImage extends StatelessWidget {
     const fullText = document.getText();
     const range = new vscode.Range(
       document.positionAt(0),
-      document.positionAt(fullText.length - 1),
+      document.positionAt(fullText.length),
     );
     edit.delete(range);
     edit.insert(document.positionAt(0), this.steps[this.step].trim());
