@@ -60,6 +60,9 @@ export class Animator {
         cursor += diff.value.length;
       }
     });
+    if (!changed) {
+      this.running = false;
+    }
     setTimeout(() => {
       this.heartbeat();
     }, heartbeatInterval);
