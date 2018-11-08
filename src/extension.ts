@@ -1,11 +1,6 @@
-import * as jsdiff from 'diff';
 import * as path from 'path';
 import * as vscode from 'vscode';
-import * as promisify from 'es6-promisify';
-
-function wait(ms: number): Promise<void> {
-  return new Promise((res) => setTimeout(res, ms));
-}
+import { Animator } from './animator';
 
 export function activate(context: vscode.ExtensionContext) {
   const updater = new Updater();
@@ -37,10 +32,12 @@ export function activate(context: vscode.ExtensionContext) {
 
 class Updater {
   private step = 0;
+  private animator?: Animator = undefined;
   private steps = [
     // Step-01
     `
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 void main() => runApp(MyApp());
 
@@ -67,6 +64,7 @@ class MyHomePage extends StatelessWidget {
     // Step-02
     `
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 void main() => runApp(MyApp());
 
@@ -98,6 +96,7 @@ class MyHomePage extends StatelessWidget {
     // Step-03
     `
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 void main() => runApp(MyApp());
 
@@ -183,7 +182,7 @@ class MyHomePage extends StatelessWidget {
 }
 `,
     // Step-05
-`
+    `
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -2274,7 +2273,7 @@ class HeroImage extends StatelessWidget {
     this.setEditorContent(editor, edit);
   }
 
-  public next(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
+  public next(editor: vscode.TextEditor, _: vscode.TextEditorEdit) {
     const basename = path.posix.basename(editor.document.fileName);
     if (basename !== 'main.dart') {
       return;
@@ -2282,11 +2281,11 @@ class HeroImage extends StatelessWidget {
 
     if (this.step < this.steps.length - 1) {
       this.step += 1;
-      this.setEditorContent(editor, edit);
+      this.animate(editor);
     }
   }
 
-  public previous(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
+  public previous(editor: vscode.TextEditor, _: vscode.TextEditorEdit) {
     const basename = path.posix.basename(editor.document.fileName);
     if (basename !== 'main.dart') {
       return;
@@ -2294,7 +2293,7 @@ class HeroImage extends StatelessWidget {
 
     if (this.step > 0) {
       this.step -= 1;
-      this.setEditorContent(editor, edit);
+      this.animate(editor);
     }
   }
 
@@ -2302,6 +2301,9 @@ class HeroImage extends StatelessWidget {
     editor: vscode.TextEditor,
     edit: vscode.TextEditorEdit,
   ) {
+    if (this.animator) {
+      this.animator.stop();
+    }
     const { document } = editor;
     const fullText = document.getText();
     const range = new vscode.Range(
@@ -2314,5 +2316,15 @@ class HeroImage extends StatelessWidget {
       this.statusBarItem.text = `Step #${this.step + 1}`;
       this.statusBarItem.show();
     });
+  }
+
+  private animate(editor: vscode.TextEditor) {
+    if (this.animator) {
+      this.animator.stop();
+    }
+    this.animator = new Animator(editor, this.steps[this.step].trim());
+    this.animator.start();
+    this.statusBarItem.text = `Step #${this.step + 1}`;
+    this.statusBarItem.show();
   }
 }
