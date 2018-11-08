@@ -4,6 +4,10 @@
     "description": "Type in flutter code",
     "version": "0.0.1",
     "publisher": "brettmorgan",
+    "repository": {
+        "type": "git",
+        "url": "sso://user/brettmorgan/devfest-flutter-typer"
+    },
     "engines": {
         "vscode": "^1.28.0"
     },
