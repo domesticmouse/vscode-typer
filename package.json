@@ -4,6 +4,7 @@
     "description": "Type in flutter code",
     "version": "0.0.1",
     "publisher": "brettmorgan",
+    "license": "Apache-2.0",
     "repository": {
         "type": "git",
         "url": "sso://user/brettmorgan/devfest-flutter-typer"
@@ -57,8 +58,12 @@
         "@types/node": "^8.10.25",
         "diff": "^3.5.0",
         "prettier": "1.15.1",
-        "tslint": "^5.8.0",
+        "tslint": "^5.11.0",
         "typescript": "^2.6.1",
         "vscode": "^1.1.21"
+    },
+    "dependencies": {
+        "jsonc-parser": "^2.0.2",
+        "vscode-uri": "^1.0.6"
     }
 }
