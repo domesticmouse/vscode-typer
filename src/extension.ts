@@ -49,14 +49,14 @@ export function activate(context: vscode.ExtensionContext) {
 
 class Updater {
   private step = 0;
-  private steps: { file: string; content: string }[] = [];
+  private steps: Array<{ file: string; content: string }> = [];
   private animator?: Animator = undefined;
 
   private statusBarItem = vscode.window.createStatusBarItem(
     vscode.StatusBarAlignment.Left,
   );
 
-  public reset(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
+  public reset(editor: vscode.TextEditor, _: vscode.TextEditorEdit) {
     if (!vscode.workspace.workspaceFolders) {
       vscode.window.showErrorMessage('Must be in an open WorkSpace');
       return;
@@ -70,7 +70,7 @@ class Updater {
       fs.readFile(uri[0].fsPath, 'UTF-8', (err, contents) => {
         if (err) {
           vscode.window.showErrorMessage(
-            `Failed to read typer/steps.json $err`,
+            `Failed to read typer/steps.json ${err}`,
           );
           return;
         }
