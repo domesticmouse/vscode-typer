@@ -4,5 +4,5 @@ Automating creating a simple Flutter app with Cloud Firestore.
 
 ## Features
 
-It types Dart code!
+It types out code!
 
