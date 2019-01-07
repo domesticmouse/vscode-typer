@@ -1,6 +1,6 @@
 import * as fs from 'fs';
-import * as vscode from 'vscode';
 import * as jsonc from 'jsonc-parser';
+import * as vscode from 'vscode';
 import { Animator } from './animator';
 
 export function activate(context: vscode.ExtensionContext) {
@@ -8,24 +8,24 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerTextEditorCommand(
       'extension.devFestResetMain',
-      (textEditor: vscode.TextEditor, edit: vscode.TextEditorEdit) => {
-        updater.reset(textEditor, edit);
+      (textEditor: vscode.TextEditor, _: vscode.TextEditorEdit) => {
+        updater.reset(textEditor);
       },
     ),
   );
   context.subscriptions.push(
     vscode.commands.registerTextEditorCommand(
       'extension.devFestNext',
-      (textEditor: vscode.TextEditor, edit: vscode.TextEditorEdit) => {
-        updater.next(textEditor, edit);
+      (textEditor: vscode.TextEditor, _: vscode.TextEditorEdit) => {
+        updater.next(textEditor);
       },
     ),
   );
   context.subscriptions.push(
     vscode.commands.registerTextEditorCommand(
       'extension.devFestPrevious',
-      (textEditor: vscode.TextEditor, edit: vscode.TextEditorEdit) => {
-        updater.previous(textEditor, edit);
+      (textEditor: vscode.TextEditor, _: vscode.TextEditorEdit) => {
+        updater.previous(textEditor);
       },
     ),
   );
@@ -33,14 +33,14 @@ export function activate(context: vscode.ExtensionContext) {
 
 class Updater {
   private step = 0;
-  private steps: { file: string; content: string }[] = [];
+  private steps: Array<{ file: string; content: string }> = [];
   private animator?: Animator = undefined;
 
   private statusBarItem = vscode.window.createStatusBarItem(
     vscode.StatusBarAlignment.Left,
   );
 
-  public reset(editor: vscode.TextEditor, edit: vscode.TextEditorEdit) {
+  public reset(editor: vscode.TextEditor) {
     if (!vscode.workspace.workspaceFolders) {
       vscode.window.showErrorMessage('Must be in an open WorkSpace');
       return;
@@ -54,7 +54,7 @@ class Updater {
       fs.readFile(uri[0].fsPath, 'UTF-8', (err, contents) => {
         if (err) {
           vscode.window.showErrorMessage(
-            `Failed to read typer/steps.json $err`,
+            'Failed to read typer/steps.json $err',
           );
           return;
         }
@@ -73,7 +73,7 @@ class Updater {
     });
   }
 
-  public next(editor: vscode.TextEditor, _: vscode.TextEditorEdit) {
+  public next(editor: vscode.TextEditor) {
     if (!vscode.workspace.workspaceFolders) {
       vscode.window.showErrorMessage('Must be in an open WorkSpace');
       return;
@@ -97,7 +97,7 @@ class Updater {
     }
   }
 
-  public previous(editor: vscode.TextEditor, _: vscode.TextEditorEdit) {
+  public previous(editor: vscode.TextEditor) {
     if (!vscode.workspace.workspaceFolders) {
       vscode.window.showErrorMessage('Must be in an open WorkSpace');
       return;
