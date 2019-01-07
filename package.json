@@ -50,16 +50,18 @@
         "watch": "tsc -watch -p ./",
         "postinstall": "node ./node_modules/vscode/bin/install",
         "test": "npm run compile && node ./node_modules/vscode/bin/test",
-        "prettier": "prettier --single-quote --trailing-comma=all --arrow-parens=always --write src/*.ts"
+        "prettier": "prettier --single-quote --trailing-comma=all --arrow-parens=always --write src/*.ts",
+        "npm-update": "ncu -u"
     },
     "devDependencies": {
         "@types/diff": "^3.5.2",
-        "@types/mocha": "^2.2.42",
-        "@types/node": "^8.10.25",
-        "diff": "^3.5.0",
-        "prettier": "1.15.1",
+        "@types/mocha": "^5.2.5",
+        "@types/node": "^10.12.18",
+        "diff": "^4.0.1",
+        "npm-check-updates": "^2.15.0",
+        "prettier": "1.15.3",
         "tslint": "^5.11.0",
-        "typescript": "^2.6.1",
+        "typescript": "^3.2.2",
         "vscode": "^1.1.21"
     },
     "dependencies": {
