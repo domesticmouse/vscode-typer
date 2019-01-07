@@ -1,6 +1,6 @@
-# flutter-typer README
+# VSCode Typer
 
-Automating creating a simple Flutter app with Cloud Firestore.
+Automated typing in Visual Studio Code. Great for live coding on stage =)
 
 ## Features
 
