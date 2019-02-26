@@ -1,8 +1,8 @@
 {
-    "name": "flutter-typer",
-    "displayName": "flutter-typer",
-    "description": "Type in flutter code",
-    "version": "0.0.1",
+    "name": "vscode-typer",
+    "displayName": "VSCode Typer",
+    "description": "Auto-magically type code",
+    "version": "0.0.3",
     "publisher": "brettmorgan",
     "license": "Apache-2.0",
     "repository": {
