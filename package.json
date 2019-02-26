@@ -2,12 +2,12 @@
     "name": "vscode-typer",
     "displayName": "VSCode Typer",
     "description": "Auto-magically type code",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "publisher": "brettmorgan",
     "license": "Apache-2.0",
     "repository": {
         "type": "git",
-        "url": "sso://user/brettmorgan/devfest-flutter-typer"
+        "url": "https://github.com/domesticmouse/vscode-typer"
     },
     "engines": {
         "vscode": "^1.31.0"
@@ -16,28 +16,28 @@
         "Other"
     ],
     "activationEvents": [
-        "onCommand:extension.devFestNext",
-        "onCommand:extension.devFestPrevious",
-        "onCommand:extension.devFestResetMain"
+        "onCommand:domesticmouse.vscode-typer.Next",
+        "onCommand:domesticmouse.vscode-typer.Previous",
+        "onCommand:domesticmouse.vscode-typer.ResetMain"
     ],
     "main": "./out/extension",
     "contributes": {
         "commands": [
             {
-                "command": "extension.devFestResetMain",
+                "command": "domesticmouse.vscode-typer.ResetMain",
                 "title": "Reset Main",
-                "category": "DevFest"
+                "category": "VSCodeTyper"
             }
         ],
         "keybindings": [
             {
-                "command": "extension.devFestNext",
+                "command": "domesticmouse.vscode-typer.Next",
                 "key": "ctrl+right",
                 "mac": "cmd+right",
                 "when": "editorTextFocus"
             },
             {
-                "command": "extension.devFestPrevious",
+                "command": "domesticmouse.vscode-typer.Previous",
                 "key": "ctrl+left",
                 "mac": "cmd+left",
                 "when": "editorTextFocus"

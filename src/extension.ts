@@ -23,7 +23,7 @@ export function activate(context: vscode.ExtensionContext) {
   const updater = new Updater();
   context.subscriptions.push(
     vscode.commands.registerTextEditorCommand(
-      'extension.devFestResetMain',
+      'domesticmouse.vscode-typer.ResetMain',
       (textEditor: vscode.TextEditor, _: vscode.TextEditorEdit) => {
         updater.reset(textEditor);
       },
@@ -31,7 +31,7 @@ export function activate(context: vscode.ExtensionContext) {
   );
   context.subscriptions.push(
     vscode.commands.registerTextEditorCommand(
-      'extension.devFestNext',
+      'domesticmouse.vscode-typer.Next',
       (textEditor: vscode.TextEditor, _: vscode.TextEditorEdit) => {
         updater.next(textEditor);
       },
@@ -39,7 +39,7 @@ export function activate(context: vscode.ExtensionContext) {
   );
   context.subscriptions.push(
     vscode.commands.registerTextEditorCommand(
-      'extension.devFestPrevious',
+      'domesticmouse.vscode-typer.Previous',
       (textEditor: vscode.TextEditor, _: vscode.TextEditorEdit) => {
         updater.previous(textEditor);
       },
@@ -95,7 +95,7 @@ class Updater {
       return;
     }
     if (this.steps.length === 0) {
-      vscode.window.showInformationMessage('Run DevFest: Reset command');
+      vscode.window.showInformationMessage('Run VSCode Typer: Reset command');
       return;
     }
 
@@ -119,7 +119,7 @@ class Updater {
       return;
     }
     if (this.steps.length === 0) {
-      vscode.window.showInformationMessage('Run DevFest: Reset command');
+      vscode.window.showInformationMessage('Run VSCode Typer: Reset command');
       return;
     }
 
