@@ -51,7 +51,8 @@
         "postinstall": "node ./node_modules/vscode/bin/install",
         "test": "npm run compile && node ./node_modules/vscode/bin/test",
         "prettier": "prettier --single-quote --trailing-comma=all --arrow-parens=always --write src/*.ts",
-        "npm-update": "ncu -u"
+        "npm-update": "ncu -u",
+        "package" : "vsce package"
     },
     "devDependencies": {
         "@types/diff": "^4.0.1",
@@ -62,6 +63,7 @@
         "prettier": "1.16.4",
         "tslint": "^5.13.0",
         "typescript": "^3.2.2",
+        "vsce": "^1.57.1",
         "vscode": "^1.1.30"
     },
     "dependencies": {
