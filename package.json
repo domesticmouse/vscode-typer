@@ -1,73 +1,72 @@
 {
-    "name": "vscode-typer",
-    "displayName": "VSCode Typer",
-    "description": "Auto-magically type code",
-    "version": "0.0.4",
-    "publisher": "brettmorgan",
-    "license": "Apache-2.0",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/domesticmouse/vscode-typer"
-    },
-    "engines": {
-        "vscode": "^1.31.0"
-    },
-    "categories": [
-        "Other"
-    ],
-    "activationEvents": [
-        "onCommand:domesticmouse.vscode-typer.Next",
-        "onCommand:domesticmouse.vscode-typer.Previous",
-        "onCommand:domesticmouse.vscode-typer.ResetMain"
-    ],
-    "main": "./out/extension",
-    "contributes": {
-        "commands": [
-            {
-                "command": "domesticmouse.vscode-typer.ResetMain",
-                "title": "Reset Main",
-                "category": "VSCodeTyper"
-            }
-        ],
-        "keybindings": [
-            {
-                "command": "domesticmouse.vscode-typer.Next",
-                "key": "ctrl+right",
-                "mac": "cmd+right",
-                "when": "editorTextFocus"
-            },
-            {
-                "command": "domesticmouse.vscode-typer.Previous",
-                "key": "ctrl+left",
-                "mac": "cmd+left",
-                "when": "editorTextFocus"
-            }
-        ]
-    },
-    "scripts": {
-        "vscode:prepublish": "npm run compile",
-        "compile": "tsc -p ./",
-        "watch": "tsc -watch -p ./",
-        "postinstall": "node ./node_modules/vscode/bin/install",
-        "test": "npm run compile && node ./node_modules/vscode/bin/test",
-        "prettier": "prettier --single-quote --trailing-comma=all --arrow-parens=always --write src/*.ts",
-        "npm-update": "ncu -u",
-        "package" : "vsce package"
-    },
-    "devDependencies": {
-        "@types/diff": "^4.0.1",
-        "@types/mocha": "^5.2.5",
-        "@types/node": "^11.9.5",
-        "diff": "^4.0.1",
-        "npm-check-updates": "^2.15.0",
-        "prettier": "1.16.4",
-        "tslint": "^5.13.0",
-        "typescript": "^3.2.2",
-        "vsce": "^1.57.1",
-        "vscode": "^1.1.30"
-    },
-    "dependencies": {
-        "jsonc-parser": "^2.0.3",
-        "vscode-uri": "^1.0.6"
-    }
+	"name": "vscode-typer",
+	"displayName": "VSCode Typer",
+	"description": "Auto-magically type code",
+	"version": "0.0.6",
+	"publisher": "brettmorgan",
+	"license": "Apache-2.0",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/domesticmouse/vscode-typer"
+	},
+	"engines": {
+		"vscode": "^1.32.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onCommand:domesticmouse.vscode-typer.Next",
+		"onCommand:domesticmouse.vscode-typer.Previous",
+		"onCommand:domesticmouse.vscode-typer.ResetMain"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "domesticmouse.vscode-typer.ResetMain",
+				"title": "Reset Main",
+				"category": "VSCodeTyper"
+			}
+		],
+		"keybindings": [
+			{
+				"command": "domesticmouse.vscode-typer.Next",
+				"key": "ctrl+right",
+				"mac": "cmd+right",
+				"when": "editorTextFocus"
+			},
+			{
+				"command": "domesticmouse.vscode-typer.Previous",
+				"key": "ctrl+left",
+				"mac": "cmd+left",
+				"when": "editorTextFocus"
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"postinstall": "node ./node_modules/vscode/bin/install",
+		"prettier": "prettier --single-quote --trailing-comma=all --arrow-parens=always --write src/*.ts",
+		"npm-update": "ncu -u",
+		"package": "vsce package"
+	},
+	"devDependencies": {
+		"@types/diff": "^4.0.1",
+		"@types/mocha": "^5.2.6",
+		"@types/node": "^11.11.4",
+		"diff": "^4.0.1",
+		"npm-check-updates": "^3.1.0",
+		"prettier": "^1.16.4",
+		"tslint": "^5.14.0",
+		"typescript": "^3.3.4000",
+		"vsce": "^1.58.0",
+		"vscode": "^1.1.32"
+	},
+	"dependencies": {
+		"jsonc-parser": "^2.0.3",
+		"vscode-uri": "^1.0.6"
+	}
 }
