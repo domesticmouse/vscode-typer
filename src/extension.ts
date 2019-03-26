@@ -162,15 +162,13 @@ class Updater {
           })
           .then(() => {
             document.save().then(() => {
-              this.statusBarItem.text = `Step #${this.step + 1}`;
-              this.statusBarItem.show();
+              this.showStep();
             });
           });
       });
     });
 
-    this.statusBarItem.text = `Step #${this.step + 1}`;
-    this.statusBarItem.show();
+    this.showStep();
   }
 
   private animate(editor: vscode.TextEditor) {
@@ -179,7 +177,11 @@ class Updater {
     }
     this.animator = new Animator(editor, this.steps[this.step].content);
     this.animator.start();
-    this.statusBarItem.text = `Step #${this.step + 1}`;
+    this.showStep();
+  }
+
+  private showStep() {
+    this.statusBarItem.text = `Step #${this.step + 1} of ${this.steps.length}`;
     this.statusBarItem.show();
   }
 }

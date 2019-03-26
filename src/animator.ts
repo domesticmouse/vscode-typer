@@ -71,12 +71,24 @@ export class Animator {
           const change = diff.value.substring(0, charactersPerChange);
           editBuilder.insert(document.positionAt(cursor), change);
           changed = true;
+          const range = new vscode.Range(
+            document.positionAt(cursor),
+            document.positionAt(cursor + change.length),
+          );
+          this.editor.revealRange(
+            range,
+            vscode.TextEditorRevealType.InCenterIfOutsideViewport,
+          );
         });
       } else if (diff.removed) {
         this.editor.edit((editBuilder) => {
           const range = new vscode.Range(
             document.positionAt(cursor),
             document.positionAt(cursor + diff.value.length),
+          );
+          this.editor.revealRange(
+            range,
+            vscode.TextEditorRevealType.InCenterIfOutsideViewport,
           );
           editBuilder.delete(range);
           changed = true;
