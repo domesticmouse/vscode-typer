@@ -56,16 +56,16 @@
 	"devDependencies": {
 		"@types/diff": "^4.0.2",
 		"@types/mocha": "^5.2.6",
-		"@types/node": "^11.11.7",
-		"npm-check-updates": "^3.1.1",
+		"@types/node": "^11.13.0",
+		"npm-check-updates": "^3.1.4",
 		"prettier": "^1.16.4",
-		"tslint": "^5.14.0",
-		"typescript": "^3.3.4000",
+		"tslint": "^5.15.0",
+		"typescript": "^3.4.1",
 		"vsce": "^1.59.0",
 		"vscode": "^1.1.33"
 	},
 	"dependencies": {
 		"diff": "^4.0.1",
-		"jsonc-parser": "^2.0.3"
+		"jsonc-parser": "^2.1.0"
 	}
 }
