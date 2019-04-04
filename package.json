@@ -2,7 +2,7 @@
 	"name": "vscode-typer",
 	"displayName": "VSCode Typer",
 	"description": "Auto-magically type code",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"publisher": "brettmorgan",
 	"license": "Apache-2.0",
 	"repository": {
@@ -25,8 +25,8 @@
 		"commands": [
 			{
 				"command": "domesticmouse.vscode-typer.ResetMain",
-				"title": "Reset Main",
-				"category": "VSCodeTyper"
+				"title": "Reset",
+				"category": "VSCode Typer"
 			}
 		],
 		"keybindings": [

@@ -95,7 +95,7 @@ class Updater {
       return;
     }
     if (this.steps.length === 0) {
-      vscode.window.showInformationMessage('Run VSCode Typer: Reset command');
+      vscode.window.showInformationMessage("Run 'VSCode Typer: Reset' command");
       return;
     }
 
@@ -119,7 +119,7 @@ class Updater {
       return;
     }
     if (this.steps.length === 0) {
-      vscode.window.showInformationMessage('Run VSCode Typer: Reset command');
+      vscode.window.showInformationMessage("Run 'VSCode Typer: Reset' command");
       return;
     }
 
