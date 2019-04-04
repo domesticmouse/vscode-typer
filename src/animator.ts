@@ -18,7 +18,7 @@ import * as jsdiff from 'diff';
 import * as fs from 'fs';
 import * as vscode from 'vscode';
 
-const charactersPerChange = 10;
+const charactersPerChange = 5;
 const heartbeatInterval = 33;
 
 export class Animator {
@@ -77,7 +77,7 @@ export class Animator {
           );
           this.editor.revealRange(
             range,
-            vscode.TextEditorRevealType.InCenter,
+            vscode.TextEditorRevealType.InCenterIfOutsideViewport,
           );
         });
       } else if (diff.removed) {
@@ -88,7 +88,7 @@ export class Animator {
           );
           this.editor.revealRange(
             range,
-            vscode.TextEditorRevealType.InCenter,
+            vscode.TextEditorRevealType.InCenterIfOutsideViewport,
           );
           editBuilder.delete(range);
           changed = true;
