@@ -164,6 +164,10 @@ class Updater {
             document.save().then(() => {
               this.showStep();
             });
+            editor.revealRange(
+              range,
+              vscode.TextEditorRevealType.InCenterIfOutsideViewport,
+            );
           });
       });
     });
