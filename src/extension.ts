@@ -49,7 +49,11 @@ export function activate(context: vscode.ExtensionContext) {
 
 class Updater {
   private step = 0;
-  private steps: Array<{ file: string; content: string }> = [];
+  private steps: Array<{
+    file: string;
+    content: string;
+    charsPerChange?: number;
+  }> = [];
   private animator?: Animator = undefined;
 
   private statusBarItem = vscode.window.createStatusBarItem(
@@ -179,7 +183,11 @@ class Updater {
     if (this.animator) {
       this.animator.stop();
     }
-    this.animator = new Animator(editor, this.steps[this.step].content);
+    this.animator = new Animator(
+      editor,
+      this.steps[this.step].content,
+      this.steps[this.step].charsPerChange,
+    );
     this.animator.start();
     this.showStep();
   }

@@ -2,7 +2,7 @@
 	"name": "vscode-typer",
 	"displayName": "VSCode Typer",
 	"description": "Auto-magically type code",
-	"version": "0.1.4",
+	"version": "0.1.5",
 	"publisher": "brettmorgan",
 	"license": "Apache-2.0",
 	"repository": {
@@ -56,11 +56,11 @@
 	"devDependencies": {
 		"@types/diff": "^4.0.2",
 		"@types/mocha": "^5.2.6",
-		"@types/node": "^11.13.0",
-		"npm-check-updates": "^3.1.4",
-		"prettier": "^1.16.4",
-		"tslint": "^5.15.0",
-		"typescript": "^3.4.1",
+		"@types/node": "^11.13.8",
+		"npm-check-updates": "^3.1.8",
+		"prettier": "^1.17.0",
+		"tslint": "^5.16.0",
+		"typescript": "^3.4.5",
 		"vsce": "^1.59.0",
 		"vscode": "^1.1.33"
 	},

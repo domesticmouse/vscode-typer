@@ -26,10 +26,18 @@ export class Animator {
   private contentPath: string;
   private target = 'not loaded yet';
   private running = false;
+  private charsPerChange = charactersPerChange;
 
-  constructor(editor: vscode.TextEditor, contentPath: string) {
+  constructor(
+    editor: vscode.TextEditor,
+    contentPath: string,
+    charsPerChange?: number,
+  ) {
     this.editor = editor;
     this.contentPath = contentPath;
+    if (charsPerChange) {
+      this.charsPerChange = charsPerChange;
+    }
   }
 
   public start() {
@@ -68,7 +76,7 @@ export class Animator {
       }
       if (diff.added) {
         this.editor.edit((editBuilder) => {
-          const change = diff.value.substring(0, charactersPerChange);
+          const change = diff.value.substring(0, this.charsPerChange);
           editBuilder.insert(document.positionAt(cursor), change);
           changed = true;
           const range = new vscode.Range(
