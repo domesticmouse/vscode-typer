@@ -29,4 +29,4 @@ It types out code!
 2. Use the VS Code Typer: Reset command via CMD+Shift+P
 3. Use CMD + -> / CMD  + <- to navigate between steps
 
-Check [this repo](https://github.com/AlexLakatos/vscode-typer-example) for a usage example.
+Check [this Flutter repo](https://github.com/google/flutter_minimal_store) for a usage example.
