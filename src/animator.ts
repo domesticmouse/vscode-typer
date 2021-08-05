@@ -43,7 +43,7 @@ export class Animator {
   public start() {
     this.running = true;
     vscode.workspace.findFiles(this.contentPath).then((uri) => {
-      fs.readFile(uri[0].fsPath, 'UTF-8', (err, contents) => {
+      fs.readFile(uri[0].fsPath, 'utf-8', (err, contents) => {
         if (err) {
           vscode.window.showErrorMessage(
             `Failed to read ${this.contentPath}: ${err}`,

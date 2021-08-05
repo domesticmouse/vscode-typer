@@ -71,7 +71,7 @@ class Updater {
     }
     const rootFolder = vscode.workspace.workspaceFolders[0];
     vscode.workspace.findFiles('typer/steps.json').then((uri) => {
-      fs.readFile(uri[0].fsPath, 'UTF-8', (err, contents) => {
+      fs.readFile(uri[0].fsPath, 'utf-8', (err, contents) => {
         if (err) {
           vscode.window.showErrorMessage(
             `Failed to read typer/steps.json ${err}`,
@@ -146,7 +146,7 @@ class Updater {
       this.animator.stop();
     }
     vscode.workspace.findFiles(this.steps[this.step].content).then((uri) => {
-      fs.readFile(uri[0].fsPath, 'UTF-8', (err, contents) => {
+      fs.readFile(uri[0].fsPath, 'utf-8', (err, contents) => {
         if (err) {
           vscode.window.showErrorMessage(
             `Failed to read ${this.steps[this.step].content} ${err}`,
