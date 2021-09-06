@@ -49,11 +49,11 @@ export function activate(context: vscode.ExtensionContext) {
 
 class Updater {
   private step = 0;
-  private steps: Array<{
+  private steps: {
     file: string;
     content: string;
     charsPerChange?: number;
-  }> = [];
+  }[] = [];
   private animator?: Animator = undefined;
 
   private statusBarItem = vscode.window.createStatusBarItem(
