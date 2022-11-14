@@ -1,17 +1,19 @@
-name: Node.js CI
+name: VSCode build
 
 on:
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * *" # Every day at midnight
 
 jobs:
-  build:
-
+  test:
     runs-on: ubuntu-latest
-
     strategy:
+      fail-fast: false
       matrix:
         node-version: [18.x, 19.x]
 
