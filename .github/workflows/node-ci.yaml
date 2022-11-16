@@ -2,9 +2,9 @@ name: VSCode build
 
 on:
   push:
-    branches: [ main ]
+    branches: [ $default-branch ]
   pull_request:
-    branches: [ main ]
+    branches: [ $default-branch ]
   workflow_dispatch:
   schedule:
     - cron: "0 0 * * *" # Every day at midnight
