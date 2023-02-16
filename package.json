@@ -2,7 +2,7 @@
 	"name": "vscode-typer",
 	"displayName": "VSCode Typer",
 	"description": "Auto-magically type code",
-	"version": "0.1.20",
+	"version": "0.1.21",
 	"publisher": "brettmorgan",
 	"license": "Apache-2.0",
 	"repository": {
@@ -17,8 +17,7 @@
 	],
 	"activationEvents": [
 		"onCommand:domesticmouse.vscode-typer.Next",
-		"onCommand:domesticmouse.vscode-typer.Previous",
-		"onCommand:domesticmouse.vscode-typer.ResetMain"
+		"onCommand:domesticmouse.vscode-typer.Previous"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
