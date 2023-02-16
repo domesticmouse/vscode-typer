@@ -13,8 +13,9 @@ It types out code!
 1. `$ npm install`
 2. `$ npm run package`
 3. Right click on the generated `vscode-typer-X.X.X.vsix` file and select "Install from VSIX"
+   
 
-![Install from VSIX](assets/Install-from-VSIX.png)
+   <img src="assets/Install-from-VSIX.png" alt="Install from VSIX" width="400" >
 
 ## Usage
 
