@@ -10,7 +10,7 @@
 		"url": "https://github.com/domesticmouse/vscode-typer"
 	},
 	"engines": {
-		"vscode": "^1.79.0"
+		"vscode": "^1.79.1"
 	},
 	"categories": [
 		"Other"
@@ -55,7 +55,7 @@
 		"@types/diff": "^5.0.3",
 		"@types/mocha": "^10.0.1",
 		"@types/node": "^20.3.1",
-		"@types/vscode": "^1.79.0",
+		"@types/vscode": "^1.79.1",
 		"@vscode/vsce": "^2.19.0",
 		"npm-check-updates": "^16.10.12",
 		"prettier": "^2.8.8",
