@@ -2,9 +2,9 @@ name: VSCode build
 
 on:
   push:
-    branches: [ $default-branch ]
+    branches: [main]
   pull_request:
-    branches: [ $default-branch ]
+    branches: [main]
   workflow_dispatch:
   schedule:
     - cron: "0 0 * * *" # Every day at midnight
@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [18.x, 19.x]
+        node-version: [18.x, 20.x]
 
     steps:
       - uses: actions/checkout@v3
