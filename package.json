@@ -52,7 +52,7 @@
 		"package": "vsce package"
 	},
 	"devDependencies": {
-		"@types/diff": "^5.0.3",
+		"@types/diff": "^5.0.4",
 		"@types/mocha": "^10.0.1",
 		"@types/node": "^20.6.0",
 		"@types/vscode": "^1.82.0",
