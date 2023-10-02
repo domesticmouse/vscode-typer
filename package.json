@@ -56,7 +56,7 @@
 		"@types/mocha": "^10.0.2",
 		"@types/node": "^20.8.0",
 		"@types/vscode": "^1.82.0",
-		"@vscode/vsce": "^2.21.0",
+		"@vscode/vsce": "^2.21.1",
 		"npm-check-updates": "^16.14.4",
 		"prettier": "^3.0.3",
 		"tslint": "^6.1.3",
