@@ -12,7 +12,7 @@ It types out code!
 
 1. `$ npm install`
 2. `$ npm run package`
-3. Right click on the generated `vscode-typer-X.X.X.vsix` file and select "Install from VSIX"
+3. Right click on the generated `vscode-typer-X.X.X.vsix` file and select "Install Extension VSIX"
    
 
    <img src="assets/Install-from-VSIX.png" alt="Install from VSIX" width="400" >
