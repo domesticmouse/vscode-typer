@@ -54,7 +54,7 @@
 	"devDependencies": {
 		"@types/diff": "^5.0.8",
 		"@types/mocha": "^10.0.4",
-		"@types/node": "^20.9.0",
+		"@types/node": "^20.9.1",
 		"@types/vscode": "^1.84.1",
 		"@vscode/vsce": "^2.22.0",
 		"npm-check-updates": "^16.14.6",
