@@ -64,6 +64,6 @@
 	},
 	"dependencies": {
 		"diff": "^5.1.0",
-		"jsonc-parser": "^3.2.0"
+		"jsonc-parser": "^3.2.1"
 	}
 }
