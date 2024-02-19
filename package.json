@@ -2,7 +2,7 @@
 	"name": "vscode-typer",
 	"displayName": "VSCode Typer",
 	"description": "Auto-magically type code",
-	"version": "0.1.25",
+	"version": "0.1.25-idx",
 	"publisher": "brettmorgan",
 	"license": "Apache-2.0",
 	"repository": {
@@ -10,7 +10,7 @@
 		"url": "https://github.com/domesticmouse/vscode-typer"
 	},
 	"engines": {
-		"vscode": "^1.86.0"
+		"vscode": "^1.83.0"
 	},
 	"categories": [
 		"Other"
@@ -55,7 +55,7 @@
 		"@types/diff": "^5.0.9",
 		"@types/mocha": "^10.0.6",
 		"@types/node": "^20.11.17",
-		"@types/vscode": "^1.86.0",
+		"@types/vscode": "^1.83.0",
 		"@vscode/vsce": "^2.23.0",
 		"npm-check-updates": "^16.14.15",
 		"prettier": "^3.2.5",
