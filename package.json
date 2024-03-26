@@ -57,7 +57,7 @@
 		"@types/node": "^20.11.30",
 		"@types/vscode": "^1.87.0",
 		"@vscode/vsce": "^2.24.0",
-		"npm-check-updates": "^16.14.17",
+		"npm-check-updates": "^16.14.18",
 		"prettier": "^3.2.5",
 		"tslint": "^6.1.3",
 		"typescript": "^5.4.3"
