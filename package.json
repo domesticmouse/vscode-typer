@@ -55,7 +55,7 @@
 		"@types/diff": "^5.2.1",
 		"@types/mocha": "^10.0.7",
 		"@types/node": "^20.14.9",
-		"@types/vscode": "^1.90.0",
+		"@types/vscode": "^1.91.0",
 		"@vscode/vsce": "^2.29.0",
 		"npm-check-updates": "^16.14.20",
 		"prettier": "^3.3.2",
