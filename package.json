@@ -53,7 +53,7 @@
 	},
 	"devDependencies": {
 		"@types/diff": "^5.2.2",
-		"@types/mocha": "^10.0.7",
+		"@types/mocha": "^10.0.8",
 		"@types/node": "^22.5.4",
 		"@types/vscode": "^1.93.0",
 		"@vscode/vsce": "^3.1.0",
