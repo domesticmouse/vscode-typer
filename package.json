@@ -10,7 +10,7 @@
 		"url": "https://github.com/domesticmouse/vscode-typer"
 	},
 	"engines": {
-		"vscode": "^1.97.0"
+		"vscode": "^1.98.0"
 	},
 	"categories": [
 		"Other"
