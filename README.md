@@ -1,5 +1,3 @@
-[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/domesticmouse/vscode-typer) 
-
 # VSCode Typer
 
 Automated typing in Visual Studio Code. Great for live coding on stage =)
