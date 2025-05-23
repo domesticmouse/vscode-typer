@@ -63,7 +63,7 @@
 		"typescript": "^5.8.3"
 	},
 	"dependencies": {
-		"diff": "^8.0.1",
+		"diff": "^8.0.2",
 		"jsonc-parser": "^3.3.1"
 	}
 }
