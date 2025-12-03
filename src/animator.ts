@@ -15,7 +15,7 @@
  */
 
 import * as jsdiff from 'diff';
-import * as fs from 'fs';
+import * as fs from 'fs/promises';
 import * as vscode from 'vscode';
 
 const charactersPerChange = 5;
@@ -40,22 +40,22 @@ export class Animator {
     }
   }
 
-  public start() {
+  public async start() {
     this.running = true;
-    vscode.workspace.findFiles(this.contentPath).then((uri) => {
-      fs.readFile(uri[0].fsPath, 'utf-8', (err, contents) => {
-        if (err) {
-          vscode.window.showErrorMessage(
-            `Failed to read ${this.contentPath}: ${err}`,
-          );
-          return;
-        }
-        this.target = contents;
-        setTimeout(() => {
-          this.heartbeat();
-        }, heartbeatInterval);
-      });
-    });
+    const uris = await vscode.workspace.findFiles(this.contentPath);
+    if (uris.length === 0) {
+      return;
+    }
+    try {
+      this.target = await fs.readFile(uris[0].fsPath, 'utf-8');
+      setTimeout(() => {
+        this.heartbeat();
+      }, heartbeatInterval);
+    } catch (err) {
+      vscode.window.showErrorMessage(
+        `Failed to read ${this.contentPath}: ${err}`,
+      );
+    }
   }
   public stop() {
     this.running = false;

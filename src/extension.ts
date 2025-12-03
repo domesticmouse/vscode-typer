@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as fs from 'fs';
+import * as fs from 'fs/promises';
 import * as jsonc from 'jsonc-parser';
 import * as vscode from 'vscode';
 import { Animator } from './animator';
@@ -24,7 +24,7 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerTextEditorCommand(
       'domesticmouse.vscode-typer.ResetMain',
-      (textEditor: vscode.TextEditor, _: vscode.TextEditorEdit) => {
+      (textEditor: vscode.TextEditor) => {
         updater.reset(textEditor);
       },
     ),
@@ -32,7 +32,7 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerTextEditorCommand(
       'domesticmouse.vscode-typer.Next',
-      (textEditor: vscode.TextEditor, _: vscode.TextEditorEdit) => {
+      (textEditor: vscode.TextEditor) => {
         updater.next(textEditor);
       },
     ),
@@ -40,7 +40,7 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerTextEditorCommand(
       'domesticmouse.vscode-typer.Previous',
-      (textEditor: vscode.TextEditor, _: vscode.TextEditorEdit) => {
+      (textEditor: vscode.TextEditor) => {
         updater.previous(textEditor);
       },
     ),
@@ -60,7 +60,7 @@ class Updater {
     vscode.StatusBarAlignment.Left,
   );
 
-  public reset(editor: vscode.TextEditor) {
+  public async reset(editor: vscode.TextEditor) {
     if (!vscode.workspace.workspaceFolders) {
       vscode.window.showErrorMessage('Must be in an open WorkSpace');
       return;
@@ -70,27 +70,27 @@ class Updater {
       return;
     }
     const rootFolder = vscode.workspace.workspaceFolders[0];
-    vscode.workspace.findFiles('typer/steps.json').then((uri) => {
-      fs.readFile(uri[0].fsPath, 'utf-8', (err, contents) => {
-        if (err) {
-          vscode.window.showErrorMessage(
-            `Failed to read typer/steps.json ${err}`,
-          );
-          return;
-        }
-        this.steps = jsonc.parse(contents);
-        vscode.window.showInformationMessage('typer/steps.json loaded');
-        this.step = 0;
-        const editFile = rootFolder.uri.with({
-          path: `${rootFolder.uri.path}/${this.steps[this.step].file}`,
-        });
-        if (editor.document.uri.fsPath !== editFile.fsPath) {
-          vscode.window.showErrorMessage(`Open editor must be ${editFile}`);
-          return;
-        }
-        this.setContents(editor);
+    const uris = await vscode.workspace.findFiles('typer/steps.json');
+    if (uris.length === 0) {
+      vscode.window.showErrorMessage('typer/steps.json not found');
+      return;
+    }
+    try {
+      const contents = await fs.readFile(uris[0].fsPath, 'utf-8');
+      this.steps = jsonc.parse(contents);
+      vscode.window.showInformationMessage('typer/steps.json loaded');
+      this.step = 0;
+      const editFile = rootFolder.uri.with({
+        path: `${rootFolder.uri.path}/${this.steps[this.step].file}`,
       });
-    });
+      if (editor.document.uri.fsPath !== editFile.fsPath) {
+        vscode.window.showErrorMessage(`Open editor must be ${editFile}`);
+        return;
+      }
+      await this.setContents(editor);
+    } catch (err) {
+      vscode.window.showErrorMessage(`Failed to read typer/steps.json ${err}`);
+    }
   }
 
   public next(editor: vscode.TextEditor) {
@@ -141,42 +141,42 @@ class Updater {
     }
   }
 
-  private setContents(editor: vscode.TextEditor) {
+  private async setContents(editor: vscode.TextEditor) {
     if (this.animator) {
       this.animator.stop();
     }
-    vscode.workspace.findFiles(this.steps[this.step].content).then((uri) => {
-      fs.readFile(uri[0].fsPath, 'utf-8', (err, contents) => {
-        if (err) {
-          vscode.window.showErrorMessage(
-            `Failed to read ${this.steps[this.step].content} ${err}`,
-          );
-          return;
-        }
-        const { document } = editor;
-        const fullText = document.getText();
-        const range = new vscode.Range(
-          document.positionAt(0),
-          document.positionAt(fullText.length),
-        );
-        editor
-          .edit((editBuilder) => {
-            editBuilder.delete(range);
-            editBuilder.insert(document.positionAt(0), contents);
-          })
-          .then(() => {
-            document.save().then(() => {
-              this.showStep();
-            });
-            editor.revealRange(
-              range,
-              vscode.TextEditorRevealType.InCenterIfOutsideViewport,
-            );
-          });
+    const uris = await vscode.workspace.findFiles(
+      this.steps[this.step].content,
+    );
+    if (uris.length === 0) {
+      vscode.window.showErrorMessage(
+        `Content file ${this.steps[this.step].content} not found`,
+      );
+      return;
+    }
+    try {
+      const contents = await fs.readFile(uris[0].fsPath, 'utf-8');
+      const { document } = editor;
+      const fullText = document.getText();
+      const range = new vscode.Range(
+        document.positionAt(0),
+        document.positionAt(fullText.length),
+      );
+      await editor.edit((editBuilder) => {
+        editBuilder.delete(range);
+        editBuilder.insert(document.positionAt(0), contents);
       });
-    });
-
-    this.showStep();
+      await document.save();
+      this.showStep();
+      editor.revealRange(
+        range,
+        vscode.TextEditorRevealType.InCenterIfOutsideViewport,
+      );
+    } catch (err) {
+      vscode.window.showErrorMessage(
+        `Failed to read ${this.steps[this.step].content} ${err}`,
+      );
+    }
   }
 
   private animate(editor: vscode.TextEditor) {
