@@ -42,11 +42,14 @@ export class Animator {
 
   public async start() {
     this.running = true;
-    const uris = await vscode.workspace.findFiles(this.contentPath);
-    if (uris.length === 0) {
-      return;
-    }
     try {
+      const uris = await vscode.workspace.findFiles(this.contentPath);
+      if (uris.length === 0) {
+        vscode.window.showErrorMessage(
+          `Content file not found: ${this.contentPath}`,
+        );
+        return;
+      }
       this.target = await fs.readFile(uris[0].fsPath, 'utf-8');
       setTimeout(() => {
         this.heartbeat();
