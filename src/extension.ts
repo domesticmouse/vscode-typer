@@ -88,7 +88,7 @@ class Updater {
         path: `${rootFolder.uri.path}/${this.steps[this.step].file}`,
       });
       if (editor.document.uri.fsPath !== editFile.fsPath) {
-        vscode.window.showErrorMessage(`Open editor must be ${editFile.toString()}`);
+        vscode.window.showErrorMessage(`Open editor must be ${editFile.fsPath}`);
         return;
       }
       await this.setContents(editor);
