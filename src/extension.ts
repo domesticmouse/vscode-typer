@@ -25,7 +25,7 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerTextEditorCommand(
       'domesticmouse.vscode-typer.ResetMain',
       (textEditor: vscode.TextEditor) => {
-        updater.reset(textEditor);
+        void updater.reset(textEditor);
       },
     ),
   );
@@ -77,19 +77,23 @@ class Updater {
     }
     try {
       const contents = await fs.readFile(uris[0].fsPath, 'utf-8');
-      this.steps = jsonc.parse(contents);
+      this.steps = jsonc.parse(contents) as {
+        file: string;
+        content: string;
+        charsPerChange?: number;
+      }[];
       vscode.window.showInformationMessage('typer/steps.json loaded');
       this.step = 0;
       const editFile = rootFolder.uri.with({
         path: `${rootFolder.uri.path}/${this.steps[this.step].file}`,
       });
       if (editor.document.uri.fsPath !== editFile.fsPath) {
-        vscode.window.showErrorMessage(`Open editor must be ${editFile}`);
+        vscode.window.showErrorMessage(`Open editor must be ${editFile.toString()}`);
         return;
       }
       await this.setContents(editor);
     } catch (err) {
-      vscode.window.showErrorMessage(`Failed to read typer/steps.json ${err}`);
+      vscode.window.showErrorMessage(`Failed to read typer/steps.json ${String(err)}`);
     }
   }
 
@@ -110,7 +114,7 @@ class Updater {
         path: `${rootFolder.uri.path}/${this.steps[this.step].file}`,
       });
       if (editor.document.uri.fsPath !== editFile.fsPath) {
-        vscode.window.showErrorMessage(`Open editor must be ${editFile}`);
+        vscode.window.showErrorMessage(`Open editor must be ${editFile.toString()}`);
         return;
       }
       this.animate(editor);
@@ -134,7 +138,7 @@ class Updater {
         path: `${rootFolder.uri.path}/${this.steps[this.step].file}`,
       });
       if (editor.document.uri.fsPath !== editFile.fsPath) {
-        vscode.window.showErrorMessage(`Open editor must be ${editFile}`);
+        vscode.window.showErrorMessage(`Open editor must be ${editFile.toString()}`);
         return;
       }
       this.animate(editor);
@@ -174,7 +178,7 @@ class Updater {
       );
     } catch (err) {
       vscode.window.showErrorMessage(
-        `Failed to read ${this.steps[this.step].content} ${err}`,
+        `Failed to read ${this.steps[this.step].content} ${String(err)}`,
       );
     }
   }
@@ -188,7 +192,7 @@ class Updater {
       this.steps[this.step].content,
       this.steps[this.step].charsPerChange,
     );
-    this.animator.start();
+    void this.animator.start();
     this.showStep();
   }
 

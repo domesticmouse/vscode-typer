@@ -56,7 +56,7 @@ export class Animator {
       }, heartbeatInterval);
     } catch (err) {
       vscode.window.showErrorMessage(
-        `Failed to read ${this.contentPath}: ${err}`,
+        `Failed to read ${this.contentPath}: ${String(err)}`,
       );
     }
   }
