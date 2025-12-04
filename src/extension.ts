@@ -19,6 +19,12 @@ import * as jsonc from 'jsonc-parser';
 import * as vscode from 'vscode';
 import { Animator } from './animator';
 
+interface Step {
+  file: string;
+  content: string;
+  charsPerChange?: number;
+}
+
 export function activate(context: vscode.ExtensionContext) {
   const updater = new Updater();
   context.subscriptions.push(
@@ -49,11 +55,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 class Updater {
   private step = 0;
-  private steps: {
-    file: string;
-    content: string;
-    charsPerChange?: number;
-  }[] = [];
+  private steps: Step[] = [];
   private animator?: Animator = undefined;
 
   private statusBarItem = vscode.window.createStatusBarItem(
@@ -86,11 +88,7 @@ class Updater {
     }
 
     try {
-      this.steps = jsonc.parse(contents) as {
-        file: string;
-        content: string;
-        charsPerChange?: number;
-      }[];
+      this.steps = jsonc.parse(contents) as Step[];
     } catch (err) {
       vscode.window.showErrorMessage(
         `Failed to parse typer/steps.json ${String(err)}`,
