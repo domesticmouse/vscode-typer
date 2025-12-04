@@ -11,17 +11,15 @@ export type Step = z.infer<typeof StepSchema>;
 
 export function parseSteps(content: string): Step[] {
   const parsed: unknown = jsonc.parse(content);
-  const validationResult = StepSchema.array().safeParse(parsed);
+  const validationResult = StepSchema.array()
+    .nonempty({ message: 'steps.json must contain at least one step' })
+    .safeParse(parsed);
 
   if (!validationResult.success) {
     throw new Error(`Invalid steps.json: ${validationResult.error.message}`);
   }
 
   const steps = validationResult.data;
-
-  if (steps.length === 0) {
-    throw new Error('steps.json must contain at least one step');
-  }
 
   return steps;
 }

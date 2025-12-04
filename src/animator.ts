@@ -79,7 +79,7 @@ export class Animator {
       void document.save();
     } else {
       if (editOp.type === 'insert') {
-        this.editor.edit((editBuilder) => {
+        void this.editor.edit((editBuilder) => {
           editBuilder.insert(document.positionAt(editOp.position), editOp.text);
           const range = new vscode.Range(
             document.positionAt(editOp.position),
@@ -91,7 +91,7 @@ export class Animator {
           );
         });
       } else if (editOp.type === 'delete') {
-        this.editor.edit((editBuilder) => {
+        void this.editor.edit((editBuilder) => {
           const range = new vscode.Range(
             document.positionAt(editOp.position),
             document.positionAt(editOp.position + editOp.length),
