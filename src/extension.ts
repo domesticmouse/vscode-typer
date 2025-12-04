@@ -14,25 +14,25 @@
  * limitations under the License.
  */
 
-import * as fs from 'fs';
-import * as jsonc from 'jsonc-parser';
+import * as fs from 'fs/promises';
 import * as vscode from 'vscode';
 import { Animator } from './animator';
+import { parseSteps, Step } from './steps';
 
 export function activate(context: vscode.ExtensionContext) {
   const updater = new Updater();
   context.subscriptions.push(
     vscode.commands.registerTextEditorCommand(
       'domesticmouse.vscode-typer.ResetMain',
-      (textEditor: vscode.TextEditor, _: vscode.TextEditorEdit) => {
-        updater.reset(textEditor);
+      (textEditor: vscode.TextEditor) => {
+        void updater.reset(textEditor);
       },
     ),
   );
   context.subscriptions.push(
     vscode.commands.registerTextEditorCommand(
       'domesticmouse.vscode-typer.Next',
-      (textEditor: vscode.TextEditor, _: vscode.TextEditorEdit) => {
+      (textEditor: vscode.TextEditor) => {
         updater.next(textEditor);
       },
     ),
@@ -40,7 +40,7 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerTextEditorCommand(
       'domesticmouse.vscode-typer.Previous',
-      (textEditor: vscode.TextEditor, _: vscode.TextEditorEdit) => {
+      (textEditor: vscode.TextEditor) => {
         updater.previous(textEditor);
       },
     ),
@@ -49,18 +49,14 @@ export function activate(context: vscode.ExtensionContext) {
 
 class Updater {
   private step = 0;
-  private steps: {
-    file: string;
-    content: string;
-    charsPerChange?: number;
-  }[] = [];
+  private steps: Step[] = [];
   private animator?: Animator = undefined;
 
   private statusBarItem = vscode.window.createStatusBarItem(
     vscode.StatusBarAlignment.Left,
   );
 
-  public reset(editor: vscode.TextEditor) {
+  public async reset(editor: vscode.TextEditor) {
     if (!vscode.workspace.workspaceFolders) {
       vscode.window.showErrorMessage('Must be in an open WorkSpace');
       return;
@@ -70,27 +66,40 @@ class Updater {
       return;
     }
     const rootFolder = vscode.workspace.workspaceFolders[0];
-    vscode.workspace.findFiles('typer/steps.json').then((uri) => {
-      fs.readFile(uri[0].fsPath, 'utf-8', (err, contents) => {
-        if (err) {
-          vscode.window.showErrorMessage(
-            `Failed to read typer/steps.json ${err}`,
-          );
-          return;
-        }
-        this.steps = jsonc.parse(contents);
-        vscode.window.showInformationMessage('typer/steps.json loaded');
-        this.step = 0;
-        const editFile = rootFolder.uri.with({
-          path: `${rootFolder.uri.path}/${this.steps[this.step].file}`,
-        });
-        if (editor.document.uri.fsPath !== editFile.fsPath) {
-          vscode.window.showErrorMessage(`Open editor must be ${editFile}`);
-          return;
-        }
-        this.setContents(editor);
-      });
+    const uris = await vscode.workspace.findFiles('typer/steps.json');
+    if (uris.length === 0) {
+      vscode.window.showErrorMessage('typer/steps.json not found');
+      return;
+    }
+    let contents: string;
+    try {
+      contents = await fs.readFile(uris[0].fsPath, 'utf-8');
+    } catch (err) {
+      vscode.window.showErrorMessage(
+        `Failed to read typer/steps.json ${String(err)}`,
+      );
+      return;
+    }
+
+    try {
+      this.steps = parseSteps(contents);
+    } catch (err) {
+      vscode.window.showErrorMessage(
+        `Failed to parse typer/steps.json ${String(err)}`,
+      );
+      return;
+    }
+
+    vscode.window.showInformationMessage('typer/steps.json loaded');
+    this.step = 0;
+    const editFile = rootFolder.uri.with({
+      path: `${rootFolder.uri.path}/${this.steps[this.step].file}`,
     });
+    if (editor.document.uri.fsPath !== editFile.fsPath) {
+      vscode.window.showErrorMessage(`Open editor must be ${editFile.fsPath}`);
+      return;
+    }
+    await this.setContents(editor);
   }
 
   public next(editor: vscode.TextEditor) {
@@ -110,7 +119,9 @@ class Updater {
         path: `${rootFolder.uri.path}/${this.steps[this.step].file}`,
       });
       if (editor.document.uri.fsPath !== editFile.fsPath) {
-        vscode.window.showErrorMessage(`Open editor must be ${editFile}`);
+        vscode.window.showErrorMessage(
+          `Open editor must be ${editFile.fsPath}`,
+        );
         return;
       }
       this.animate(editor);
@@ -134,49 +145,54 @@ class Updater {
         path: `${rootFolder.uri.path}/${this.steps[this.step].file}`,
       });
       if (editor.document.uri.fsPath !== editFile.fsPath) {
-        vscode.window.showErrorMessage(`Open editor must be ${editFile}`);
+        vscode.window.showErrorMessage(
+          `Open editor must be ${editFile.fsPath}`,
+        );
         return;
       }
       this.animate(editor);
     }
   }
 
-  private setContents(editor: vscode.TextEditor) {
+  private async setContents(editor: vscode.TextEditor) {
     if (this.animator) {
       this.animator.stop();
     }
-    vscode.workspace.findFiles(this.steps[this.step].content).then((uri) => {
-      fs.readFile(uri[0].fsPath, 'utf-8', (err, contents) => {
-        if (err) {
-          vscode.window.showErrorMessage(
-            `Failed to read ${this.steps[this.step].content} ${err}`,
-          );
-          return;
-        }
-        const { document } = editor;
-        const fullText = document.getText();
-        const range = new vscode.Range(
-          document.positionAt(0),
-          document.positionAt(fullText.length),
+    try {
+      const uris = await vscode.workspace.findFiles(
+        this.steps[this.step].content,
+      );
+      if (uris.length === 0) {
+        vscode.window.showErrorMessage(
+          `Content file ${this.steps[this.step].content} not found`,
         );
-        editor
-          .edit((editBuilder) => {
-            editBuilder.delete(range);
-            editBuilder.insert(document.positionAt(0), contents);
-          })
-          .then(() => {
-            document.save().then(() => {
-              this.showStep();
-            });
-            editor.revealRange(
-              range,
-              vscode.TextEditorRevealType.InCenterIfOutsideViewport,
-            );
-          });
+        return;
+      }
+      const contents = await fs.readFile(uris[0].fsPath, 'utf-8');
+      const { document } = editor;
+      const fullText = document.getText();
+      const range = new vscode.Range(
+        document.positionAt(0),
+        document.positionAt(fullText.length),
+      );
+      const success = await editor.edit((editBuilder) => {
+        editBuilder.delete(range);
+        editBuilder.insert(document.positionAt(0), contents);
       });
-    });
-
-    this.showStep();
+      if (!success) {
+        throw new Error('Editor edit failed');
+      }
+      await document.save();
+      this.showStep();
+      editor.revealRange(
+        range,
+        vscode.TextEditorRevealType.InCenterIfOutsideViewport,
+      );
+    } catch (err) {
+      vscode.window.showErrorMessage(
+        `Failed to read ${this.steps[this.step].content} ${String(err)}`,
+      );
+    }
   }
 
   private animate(editor: vscode.TextEditor) {
@@ -188,7 +204,7 @@ class Updater {
       this.steps[this.step].content,
       this.steps[this.step].charsPerChange,
     );
-    this.animator.start();
+    void this.animator.start();
     this.showStep();
   }
 

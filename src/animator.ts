@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import * as jsdiff from 'diff';
-import * as fs from 'fs';
+import * as fs from 'fs/promises';
 import * as vscode from 'vscode';
+import { getNextEdit } from './animator-logic';
 
 const charactersPerChange = 5;
 const heartbeatInterval = 33;
@@ -40,22 +40,27 @@ export class Animator {
     }
   }
 
-  public start() {
+  public async start() {
     this.running = true;
-    vscode.workspace.findFiles(this.contentPath).then((uri) => {
-      fs.readFile(uri[0].fsPath, 'utf-8', (err, contents) => {
-        if (err) {
-          vscode.window.showErrorMessage(
-            `Failed to read ${this.contentPath}: ${err}`,
-          );
-          return;
-        }
-        this.target = contents;
-        setTimeout(() => {
-          this.heartbeat();
-        }, heartbeatInterval);
-      });
-    });
+    try {
+      const uris = await vscode.workspace.findFiles(this.contentPath);
+      if (uris.length === 0) {
+        this.running = false;
+        vscode.window.showErrorMessage(
+          `Content file not found: ${this.contentPath}`,
+        );
+        return;
+      }
+      this.target = await fs.readFile(uris[0].fsPath, 'utf-8');
+      setTimeout(() => {
+        this.heartbeat();
+      }, heartbeatInterval);
+    } catch (err) {
+      this.running = false;
+      vscode.window.showErrorMessage(
+        `Failed to read ${this.contentPath}: ${String(err)}`,
+      );
+    }
   }
   public stop() {
     this.running = false;
@@ -67,50 +72,43 @@ export class Animator {
     }
     const { document } = this.editor;
     const fullText = document.getText();
-    const diffs = jsdiff.diffChars(fullText, this.target);
-    let cursor = 0;
-    let changed = false;
-    diffs.forEach((diff) => {
-      if (changed) {
-        return;
-      }
-      if (diff.added) {
-        this.editor.edit((editBuilder) => {
-          const change = diff.value.substring(0, this.charsPerChange);
-          editBuilder.insert(document.positionAt(cursor), change);
-          changed = true;
+    const editOp = getNextEdit(fullText, this.target, this.charsPerChange);
+
+    if (!editOp) {
+      this.running = false;
+      void document.save();
+    } else {
+      if (editOp.type === 'insert') {
+        void this.editor.edit((editBuilder) => {
+          editBuilder.insert(document.positionAt(editOp.position), editOp.text);
           const range = new vscode.Range(
-            document.positionAt(cursor),
-            document.positionAt(cursor + change.length),
+            document.positionAt(editOp.position),
+            document.positionAt(editOp.position + editOp.text.length),
           );
           this.editor.revealRange(
             range,
             vscode.TextEditorRevealType.InCenterIfOutsideViewport,
           );
         });
-      } else if (diff.removed) {
-        this.editor.edit((editBuilder) => {
+      } else if (editOp.type === 'delete') {
+        void this.editor.edit((editBuilder) => {
           const range = new vscode.Range(
-            document.positionAt(cursor),
-            document.positionAt(cursor + diff.value.length),
+            document.positionAt(editOp.position),
+            document.positionAt(editOp.position + editOp.length),
           );
           this.editor.revealRange(
             range,
             vscode.TextEditorRevealType.InCenterIfOutsideViewport,
           );
           editBuilder.delete(range);
-          changed = true;
         });
-      } else {
-        cursor += diff.value.length;
       }
-    });
-    if (!changed) {
-      this.running = false;
-      document.save();
     }
-    setTimeout(() => {
-      this.heartbeat();
-    }, heartbeatInterval);
+
+    if (editOp) {
+      setTimeout(() => {
+        this.heartbeat();
+      }, heartbeatInterval);
+    }
   }
 }
