@@ -166,10 +166,13 @@ class Updater {
         document.positionAt(0),
         document.positionAt(fullText.length),
       );
-      await editor.edit((editBuilder) => {
+      const success = await editor.edit((editBuilder) => {
         editBuilder.delete(range);
         editBuilder.insert(document.positionAt(0), contents);
       });
+      if (!success) {
+        throw new Error('Editor edit failed');
+      }
       await document.save();
       this.showStep();
       editor.revealRange(
