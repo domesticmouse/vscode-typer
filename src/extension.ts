@@ -17,13 +17,16 @@
 import * as fs from 'fs/promises';
 import * as jsonc from 'jsonc-parser';
 import * as vscode from 'vscode';
+import { z } from 'zod';
 import { Animator } from './animator';
 
-interface Step {
-  file: string;
-  content: string;
-  charsPerChange?: number;
-}
+const StepSchema = z.object({
+  file: z.string(),
+  content: z.string(),
+  charsPerChange: z.number().optional(),
+});
+
+type Step = z.infer<typeof StepSchema>;
 
 export function activate(context: vscode.ExtensionContext) {
   const updater = new Updater();
@@ -88,7 +91,15 @@ class Updater {
     }
 
     try {
-      this.steps = jsonc.parse(contents) as Step[];
+      const parsed: unknown = jsonc.parse(contents);
+      const validationResult = StepSchema.array().safeParse(parsed);
+      if (!validationResult.success) {
+        vscode.window.showErrorMessage(
+          `Invalid typer/steps.json: ${validationResult.error.message}`,
+        );
+        return;
+      }
+      this.steps = validationResult.data;
     } catch (err) {
       vscode.window.showErrorMessage(
         `Failed to parse typer/steps.json ${String(err)}`,
