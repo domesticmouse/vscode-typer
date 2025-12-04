@@ -15,18 +15,9 @@
  */
 
 import * as fs from 'fs/promises';
-import * as jsonc from 'jsonc-parser';
 import * as vscode from 'vscode';
-import { z } from 'zod';
 import { Animator } from './animator';
-
-const StepSchema = z.object({
-  file: z.string(),
-  content: z.string(),
-  charsPerChange: z.number().optional(),
-});
-
-type Step = z.infer<typeof StepSchema>;
+import { parseSteps, Step } from './steps';
 
 export function activate(context: vscode.ExtensionContext) {
   const updater = new Updater();
@@ -91,15 +82,7 @@ class Updater {
     }
 
     try {
-      const parsed: unknown = jsonc.parse(contents);
-      const validationResult = StepSchema.array().safeParse(parsed);
-      if (!validationResult.success) {
-        vscode.window.showErrorMessage(
-          `Invalid typer/steps.json: ${validationResult.error.message}`,
-        );
-        return;
-      }
-      this.steps = validationResult.data;
+      this.steps = parseSteps(contents);
     } catch (err) {
       vscode.window.showErrorMessage(
         `Failed to parse typer/steps.json ${String(err)}`,
@@ -136,7 +119,9 @@ class Updater {
         path: `${rootFolder.uri.path}/${this.steps[this.step].file}`,
       });
       if (editor.document.uri.fsPath !== editFile.fsPath) {
-        vscode.window.showErrorMessage(`Open editor must be ${editFile.fsPath}`);
+        vscode.window.showErrorMessage(
+          `Open editor must be ${editFile.fsPath}`,
+        );
         return;
       }
       this.animate(editor);
@@ -160,7 +145,9 @@ class Updater {
         path: `${rootFolder.uri.path}/${this.steps[this.step].file}`,
       });
       if (editor.document.uri.fsPath !== editFile.fsPath) {
-        vscode.window.showErrorMessage(`Open editor must be ${editFile.fsPath}`);
+        vscode.window.showErrorMessage(
+          `Open editor must be ${editFile.fsPath}`,
+        );
         return;
       }
       this.animate(editor);

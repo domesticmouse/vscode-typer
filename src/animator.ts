@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import * as jsdiff from 'diff';
 import * as fs from 'fs/promises';
 import * as vscode from 'vscode';
+import { getNextEdit } from './animator-logic';
 
 const charactersPerChange = 5;
 const heartbeatInterval = 33;
@@ -72,50 +72,43 @@ export class Animator {
     }
     const { document } = this.editor;
     const fullText = document.getText();
-    const diffs = jsdiff.diffChars(fullText, this.target);
-    let cursor = 0;
-    let changed = false;
-    diffs.forEach((diff) => {
-      if (changed) {
-        return;
-      }
-      if (diff.added) {
+    const editOp = getNextEdit(fullText, this.target, this.charsPerChange);
+
+    if (!editOp) {
+      this.running = false;
+      document.save();
+    } else {
+      if (editOp.type === 'insert') {
         this.editor.edit((editBuilder) => {
-          const change = diff.value.substring(0, this.charsPerChange);
-          editBuilder.insert(document.positionAt(cursor), change);
-          changed = true;
+          editBuilder.insert(document.positionAt(editOp.position), editOp.text);
           const range = new vscode.Range(
-            document.positionAt(cursor),
-            document.positionAt(cursor + change.length),
+            document.positionAt(editOp.position),
+            document.positionAt(editOp.position + editOp.text.length),
           );
           this.editor.revealRange(
             range,
             vscode.TextEditorRevealType.InCenterIfOutsideViewport,
           );
         });
-      } else if (diff.removed) {
+      } else if (editOp.type === 'delete') {
         this.editor.edit((editBuilder) => {
           const range = new vscode.Range(
-            document.positionAt(cursor),
-            document.positionAt(cursor + diff.value.length),
+            document.positionAt(editOp.position),
+            document.positionAt(editOp.position + editOp.length),
           );
           this.editor.revealRange(
             range,
             vscode.TextEditorRevealType.InCenterIfOutsideViewport,
           );
           editBuilder.delete(range);
-          changed = true;
         });
-      } else {
-        cursor += diff.value.length;
       }
-    });
-    if (!changed) {
-      this.running = false;
-      document.save();
     }
-    setTimeout(() => {
-      this.heartbeat();
-    }, heartbeatInterval);
+
+    if (editOp) {
+      setTimeout(() => {
+        this.heartbeat();
+      }, heartbeatInterval);
+    }
   }
 }
