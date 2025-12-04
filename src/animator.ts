@@ -45,6 +45,7 @@ export class Animator {
     try {
       const uris = await vscode.workspace.findFiles(this.contentPath);
       if (uris.length === 0) {
+        this.running = false;
         vscode.window.showErrorMessage(
           `Content file not found: ${this.contentPath}`,
         );
@@ -55,6 +56,7 @@ export class Animator {
         this.heartbeat();
       }, heartbeatInterval);
     } catch (err) {
+      this.running = false;
       vscode.window.showErrorMessage(
         `Failed to read ${this.contentPath}: ${String(err)}`,
       );
