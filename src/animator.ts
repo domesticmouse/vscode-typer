@@ -76,7 +76,7 @@ export class Animator {
 
     if (!editOp) {
       this.running = false;
-      document.save();
+      void document.save();
     } else {
       if (editOp.type === 'insert') {
         this.editor.edit((editBuilder) => {
