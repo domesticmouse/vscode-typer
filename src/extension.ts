@@ -70,12 +70,12 @@ class Updater {
       return;
     }
     const rootFolder = vscode.workspace.workspaceFolders[0];
-    const uris = await vscode.workspace.findFiles('typer/steps.json');
-    if (uris.length === 0) {
-      vscode.window.showErrorMessage('typer/steps.json not found');
-      return;
-    }
     try {
+      const uris = await vscode.workspace.findFiles('typer/steps.json');
+      if (uris.length === 0) {
+        vscode.window.showErrorMessage('typer/steps.json not found');
+        return;
+      }
       const contents = await fs.readFile(uris[0].fsPath, 'utf-8');
       this.steps = jsonc.parse(contents) as {
         file: string;
@@ -149,16 +149,16 @@ class Updater {
     if (this.animator) {
       this.animator.stop();
     }
-    const uris = await vscode.workspace.findFiles(
-      this.steps[this.step].content,
-    );
-    if (uris.length === 0) {
-      vscode.window.showErrorMessage(
-        `Content file ${this.steps[this.step].content} not found`,
-      );
-      return;
-    }
     try {
+      const uris = await vscode.workspace.findFiles(
+        this.steps[this.step].content,
+      );
+      if (uris.length === 0) {
+        vscode.window.showErrorMessage(
+          `Content file ${this.steps[this.step].content} not found`,
+        );
+        return;
+      }
       const contents = await fs.readFile(uris[0].fsPath, 'utf-8');
       const { document } = editor;
       const fullText = document.getText();
