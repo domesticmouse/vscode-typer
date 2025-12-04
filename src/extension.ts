@@ -70,31 +70,44 @@ class Updater {
       return;
     }
     const rootFolder = vscode.workspace.workspaceFolders[0];
+    const uris = await vscode.workspace.findFiles('typer/steps.json');
+    if (uris.length === 0) {
+      vscode.window.showErrorMessage('typer/steps.json not found');
+      return;
+    }
+    let contents: string;
     try {
-      const uris = await vscode.workspace.findFiles('typer/steps.json');
-      if (uris.length === 0) {
-        vscode.window.showErrorMessage('typer/steps.json not found');
-        return;
-      }
-      const contents = await fs.readFile(uris[0].fsPath, 'utf-8');
+      contents = await fs.readFile(uris[0].fsPath, 'utf-8');
+    } catch (err) {
+      vscode.window.showErrorMessage(
+        `Failed to read typer/steps.json ${String(err)}`,
+      );
+      return;
+    }
+
+    try {
       this.steps = jsonc.parse(contents) as {
         file: string;
         content: string;
         charsPerChange?: number;
       }[];
-      vscode.window.showInformationMessage('typer/steps.json loaded');
-      this.step = 0;
-      const editFile = rootFolder.uri.with({
-        path: `${rootFolder.uri.path}/${this.steps[this.step].file}`,
-      });
-      if (editor.document.uri.fsPath !== editFile.fsPath) {
-        vscode.window.showErrorMessage(`Open editor must be ${editFile.fsPath}`);
-        return;
-      }
-      await this.setContents(editor);
     } catch (err) {
-      vscode.window.showErrorMessage(`Failed to read typer/steps.json ${String(err)}`);
+      vscode.window.showErrorMessage(
+        `Failed to parse typer/steps.json ${String(err)}`,
+      );
+      return;
     }
+
+    vscode.window.showInformationMessage('typer/steps.json loaded');
+    this.step = 0;
+    const editFile = rootFolder.uri.with({
+      path: `${rootFolder.uri.path}/${this.steps[this.step].file}`,
+    });
+    if (editor.document.uri.fsPath !== editFile.fsPath) {
+      vscode.window.showErrorMessage(`Open editor must be ${editFile.fsPath}`);
+      return;
+    }
+    await this.setContents(editor);
   }
 
   public next(editor: vscode.TextEditor) {
