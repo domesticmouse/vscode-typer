@@ -10,7 +10,7 @@
 		"url": "https://github.com/domesticmouse/vscode-typer"
 	},
 	"engines": {
-		"vscode": "^1.107.0"
+		"vscode": "^1.108.1"
 	},
 	"categories": [
 		"Other"
@@ -58,7 +58,7 @@
 		"@types/diff": "^8.0.0",
 		"@types/mocha": "^10.0.10",
 		"@types/node": "^25.0.3",
-		"@types/vscode": "^1.107.0",
+		"@types/vscode": "^1.108.1",
 		"@typescript-eslint/eslint-plugin": "^8.48.1",
 		"@typescript-eslint/parser": "^8.49.0",
 		"@vscode/vsce": "^3.7.1",
