@@ -15,16 +15,22 @@
 	"categories": [
 		"Other"
 	],
-	"activationEvents": [
-		"onCommand:domesticmouse.vscode-typer.Next",
-		"onCommand:domesticmouse.vscode-typer.Previous"
-	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
 			{
 				"command": "domesticmouse.vscode-typer.ResetMain",
 				"title": "Reset",
+				"category": "VSCode Typer"
+			},
+			{
+				"command": "domesticmouse.vscode-typer.Next",
+				"title": "Next Step",
+				"category": "VSCode Typer"
+			},
+			{
+				"command": "domesticmouse.vscode-typer.Previous",
+				"title": "Previous Step",
 				"category": "VSCode Typer"
 			}
 		],
