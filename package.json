@@ -62,7 +62,7 @@
 		"@typescript-eslint/eslint-plugin": "^8.57.2",
 		"@typescript-eslint/parser": "^8.57.2",
 		"@vscode/vsce": "^3.7.1",
-		"eslint": "^10.0.3",
+		"eslint": "^10.1.0",
 		"mocha": "^11.7.5",
 		"npm-check-updates": "^19.6.3",
 		"prettier": "^3.8.1",
