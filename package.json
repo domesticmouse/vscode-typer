@@ -1,78 +1,78 @@
 {
-	"name": "vscode-typer",
-	"displayName": "VSCode Typer",
-	"description": "Auto-magically type code",
-	"version": "0.2.0",
-	"publisher": "brettmorgan",
-	"license": "Apache-2.0",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/domesticmouse/vscode-typer"
-	},
-	"engines": {
-		"vscode": "^1.110.0"
-	},
-	"categories": [
-		"Other"
-	],
-	"activationEvents": [
-		"onCommand:domesticmouse.vscode-typer.Next",
-		"onCommand:domesticmouse.vscode-typer.Previous"
-	],
-	"main": "./out/extension.js",
-	"contributes": {
-		"commands": [
-			{
-				"command": "domesticmouse.vscode-typer.ResetMain",
-				"title": "Reset",
-				"category": "VSCode Typer"
-			}
-		],
-		"keybindings": [
-			{
-				"command": "domesticmouse.vscode-typer.Next",
-				"key": "ctrl+right",
-				"mac": "cmd+right",
-				"when": "editorTextFocus"
-			},
-			{
-				"command": "domesticmouse.vscode-typer.Previous",
-				"key": "ctrl+left",
-				"mac": "cmd+left",
-				"when": "editorTextFocus"
-			}
-		]
-	},
-	"scripts": {
-		"vscode:prepublish": "npm run compile",
-		"compile": "tsc -p ./",
-		"lint": "eslint src",
-		"watch": "tsc -watch -p ./",
-		"prettier": "prettier --single-quote --trailing-comma=all --arrow-parens=always --write src/*.ts",
-		"update": "ncu -u",
-		"package": "vsce package",
-		"test": "mocha -r tsx test/*.test.ts"
-	},
-	"devDependencies": {
-		"@eslint/js": "^9.39.1",
-		"@types/diff": "^8.0.0",
-		"@types/mocha": "^10.0.10",
-		"@types/node": "^25.5.0",
-		"@types/vscode": "^1.110.0",
-		"@typescript-eslint/eslint-plugin": "^8.58.1",
-		"@typescript-eslint/parser": "^8.58.1",
-		"@vscode/vsce": "^3.7.1",
-		"eslint": "^10.1.0",
-		"mocha": "^11.3.0",
-		"npm-check-updates": "^19.6.3",
-		"prettier": "^3.8.1",
-		"tsx": "^4.21.0",
-		"typescript": "^5.9.3",
-		"typescript-eslint": "^8.58.0"
-	},
-	"dependencies": {
-		"diff": "^8.0.4",
-		"jsonc-parser": "^3.3.1",
-		"zod": "^4.3.6"
-	}
+  "name": "vscode-typer",
+  "displayName": "VSCode Typer",
+  "description": "Auto-magically type code",
+  "version": "0.2.0",
+  "publisher": "brettmorgan",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/domesticmouse/vscode-typer"
+  },
+  "engines": {
+    "vscode": "^1.110.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:domesticmouse.vscode-typer.Next",
+    "onCommand:domesticmouse.vscode-typer.Previous"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "domesticmouse.vscode-typer.ResetMain",
+        "title": "Reset",
+        "category": "VSCode Typer"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "domesticmouse.vscode-typer.Next",
+        "key": "ctrl+right",
+        "mac": "cmd+right",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "domesticmouse.vscode-typer.Previous",
+        "key": "ctrl+left",
+        "mac": "cmd+left",
+        "when": "editorTextFocus"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "lint": "eslint src",
+    "watch": "tsc -watch -p ./",
+    "prettier": "prettier --single-quote --trailing-comma=all --arrow-parens=always --write src/*.ts",
+    "update": "ncu -u",
+    "package": "vsce package",
+    "test": "mocha -r tsx test/*.test.ts"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@types/diff": "^8.0.0",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^25.5.0",
+    "@types/vscode": "^1.110.0",
+    "@typescript-eslint/eslint-plugin": "^8.58.1",
+    "@typescript-eslint/parser": "^8.58.1",
+    "@vscode/vsce": "^3.7.1",
+    "eslint": "^10.1.0",
+    "mocha": "^11.3.0",
+    "npm-check-updates": "^19.6.3",
+    "prettier": "^3.8.1",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.58.0"
+  },
+  "dependencies": {
+    "diff": "^8.0.4",
+    "jsonc-parser": "^3.3.1",
+    "zod": "^4.3.6"
+  }
 }
