@@ -73,7 +73,7 @@
     "prettier": "^3.8.3",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.58.2"
+    "typescript-eslint": "^8.59.1"
   },
   "dependencies": {
     "diff": "^9.0.0",
