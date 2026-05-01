@@ -67,7 +67,7 @@
     "@types/node": "^25.6.0",
     "@types/vscode": "^1.116.0",
     "@vscode/vsce": "^3.9.0",
-    "eslint": "^10.2.0",
+    "eslint": "^10.2.1",
     "mocha": "^11.7.5",
     "npm-check-updates": "^22.0.1",
     "prettier": "^3.8.3",
