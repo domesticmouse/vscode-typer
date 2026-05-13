@@ -65,7 +65,7 @@
     "@types/diff": "^8.0.0",
     "@types/mocha": "^10.0.10",
     "@types/node": "^25.7.0",
-    "@types/vscode": "^1.116.0",
+    "@types/vscode": "^1.118.0",
     "@vscode/vsce": "^3.9.0",
     "eslint": "^10.3.0",
     "mocha": "^11.7.5",
