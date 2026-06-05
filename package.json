@@ -71,7 +71,7 @@
     "mocha": "^11.7.6",
     "npm-check-updates": "^22.2.2",
     "prettier": "^3.8.3",
-    "tsx": "^4.22.3",
+    "tsx": "^4.22.4",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.60.1"
   },
