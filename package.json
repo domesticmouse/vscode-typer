@@ -69,7 +69,7 @@
     "@vscode/vsce": "^3.9.2",
     "eslint": "^10.4.1",
     "mocha": "^11.7.6",
-    "npm-check-updates": "^22.2.2",
+    "npm-check-updates": "^22.2.3",
     "prettier": "^3.8.3",
     "tsx": "^4.22.4",
     "typescript": "^5.9.3",
